@@ -19,5 +19,9 @@
 			</array>
 		</dict>
 	</array>
+	<key>PORTL_API_BASE_URL</key>
+	<string>$(PORTL_API_BASE_URL)</string>
+	<key>SOLANA_RPC_URL</key>
+	<string>$(SOLANA_RPC_URL)</string>
 </dict>
 </plist>

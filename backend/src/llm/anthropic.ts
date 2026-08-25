@@ -23,11 +23,19 @@ import {
   type RunResult,
 } from "./types.ts";
 
-const client = new Anthropic({
-  apiKey: env.anthropicApiKey,
-  maxRetries: 2,
-  timeout: 120_000,
-});
+// Lazy for the same reason as the OpenAI provider: importing a provider must
+// never require the other provider's credentials.
+let client: Anthropic | null = null;
+
+function getClient(): Anthropic {
+  if (!client) {
+    if (!env.anthropicApiKey) {
+      throw new Error("ANTHROPIC_API_KEY is required when LLM_PROVIDER=anthropic");
+    }
+    client = new Anthropic({ apiKey: env.anthropicApiKey, maxRetries: 2, timeout: 120_000 });
+  }
+  return client;
+}
 
 const toolDefs: Anthropic.Tool[] = TOOLS.map((t) => ({
   name: t.name,
@@ -56,7 +64,7 @@ export class AnthropicProvider implements AnalystProvider {
       usage.iterations = iteration + 1;
       ctx.signal.throwIfAborted();
 
-      const stream = client.messages.stream(
+      const stream = getClient().messages.stream(
         {
           model: this.model,
           max_tokens: MAX_OUTPUT_TOKENS,

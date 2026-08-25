@@ -19,11 +19,20 @@ import {
   type RunResult,
 } from "./types.ts";
 
-const client = new OpenAI({
-  apiKey: env.openaiApiKey,
-  maxRetries: 2,
-  timeout: 120_000,
-});
+// Constructed on first use, not at import time. The OpenAI SDK throws when no
+// key is present, so building it at module scope crashed the whole server on
+// boot whenever LLM_PROVIDER=anthropic and OPENAI_API_KEY was unset.
+let client: OpenAI | null = null;
+
+function getClient(): OpenAI {
+  if (!client) {
+    if (!env.openaiApiKey) {
+      throw new Error("OPENAI_API_KEY is required when LLM_PROVIDER=openai");
+    }
+    client = new OpenAI({ apiKey: env.openaiApiKey, maxRetries: 2, timeout: 120_000 });
+  }
+  return client;
+}
 
 const toolDefs: OpenAI.Chat.Completions.ChatCompletionTool[] = TOOLS.map((t) => ({
   type: "function",
@@ -59,7 +68,7 @@ export class OpenAIProvider implements AnalystProvider {
       usage.iterations = iteration + 1;
       ctx.signal.throwIfAborted();
 
-      const stream = await client.chat.completions.create(
+      const stream = await getClient().chat.completions.create(
         {
           model: this.model,
           max_tokens: MAX_OUTPUT_TOKENS,

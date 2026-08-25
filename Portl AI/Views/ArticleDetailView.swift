@@ -1,4 +1,5 @@
 import SwiftUI
+import PrivySDK
 import SafariServices
 
 // MARK: - Safari View (UIViewControllerRepresentable)
@@ -25,52 +26,66 @@ final class AISummaryGenerator {
 
     var summary: String = ""
     var isLoading = true
-
-    static let openAIKey: String? = {
-        // Check UserDefaults for stored key
-        UserDefaults.standard.string(forKey: "openai_api_key")
-    }()
+    /// True only when the text shown actually came from the model. The badge
+    /// previously keyed off "is an API key present", which claimed an AI
+    /// summary even when the request had failed and fallback text was shown.
+    var isAIGenerated = false
 
     func generate(for article: NewsArticle) async {
-        // If article has a description, use it as the base
         let description = article.description
 
-        guard let apiKey = Self.openAIKey, !apiKey.isEmpty else {
-            // No API key — fall back to description or a generated contextual summary
-            if !description.isEmpty {
-                summary = description
-            } else {
-                summary = generateLocalSummary(title: article.title, symbols: article.mentionedSymbols)
-            }
+        // Summaries now come from the backend, which holds the provider key.
+        // Signed-out users (or any backend failure) fall back to the article's
+        // own description, then to a locally composed blurb — the summary is a
+        // nicety, so it must never block the screen.
+        func useFallback() {
+            summary = description.isEmpty
+                ? generateLocalSummary(title: article.title, symbols: article.mentionedSymbols)
+                : description
+            isAIGenerated = false
             isLoading = false
+        }
+
+        guard let user = await AuthManager.shared.currentUser() else {
+            useFallback()
             return
         }
 
-        // Use OpenAI to expand the headline into a brief summary
-        do {
-            let service = AIService(apiKey: apiKey)
-            let prompt = """
-            Write a concise 2-3 paragraph news summary based on this headline and context. \
-            Do not fabricate specific data, prices, or quotes. Focus on explaining what the \
-            headline means and its potential implications. Write in a neutral, journalistic tone.
+        let prompt = """
+        Write a concise 2-3 paragraph news summary based on this headline and context. \
+        Do not fabricate specific data, prices, or quotes, and do not look anything up. \
+        Focus on explaining what the headline means and its potential implications. \
+        Write in a neutral, journalistic tone.
 
-            Headline: \(article.title)
-            \(description.isEmpty ? "" : "Context: \(description)")
-            """
-            let result = try await service.sendMessage(
-                prompt,
-                conversationHistory: []
+        Headline: \(article.title)
+        \(description.isEmpty ? "" : "Context: \(description)")
+        """
+
+        do {
+            let token = try await user.getAccessToken()
+            let stream = try await PortlAPIClient.streamChat(
+                message: prompt,
+                history: [],
+                holdings: [],
+                accessToken: token
             )
-            summary = result
-        } catch {
-            // Fallback to description or local summary
-            if !description.isEmpty {
-                summary = description
-            } else {
-                summary = generateLocalSummary(title: article.title, symbols: article.mentionedSymbols)
+
+            var text = ""
+            for try await event in stream {
+                if case .text(let delta) = event { text += delta }
             }
+
+            let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+            if trimmed.isEmpty {
+                useFallback()
+                return
+            }
+            summary = trimmed
+            isAIGenerated = true
+            isLoading = false
+        } catch {
+            useFallback()
         }
-        isLoading = false
     }
 
     /// Build a short contextual blurb from the headline when no API key and no description
@@ -332,7 +347,7 @@ struct ArticleDetailView: View {
 
             Spacer()
 
-            if AISummaryGenerator.openAIKey != nil {
+            if summaryGen.isAIGenerated {
                 HStack(spacing: 4) {
                     Image(systemName: "sparkles")
                         .font(.system(size: 10))

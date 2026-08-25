@@ -5,21 +5,13 @@ struct AIView: View {
 
     @State private var viewModel = ChatViewModel()
     @State private var scrollProxy: ScrollViewProxy?
-    @State private var showAPIKeySheet = false
     @FocusState private var inputFocused: Bool
-
-    /// Stored API key in UserDefaults (simple for now)
-    @AppStorage("openai_api_key") private var storedAPIKey = ""
 
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                if !viewModel.isConfigured {
-                    apiKeyPrompt
-                } else {
-                    chatContent
-                    inputBar
-                }
+                chatContent
+                inputBar
             }
             .background(Color(.systemBackground))
             .navigationTitle("Portl")
@@ -33,86 +25,15 @@ struct AIView: View {
                             Label("New Chat", systemImage: "plus.message")
                         }
 
-                        Button {
-                            Task { await viewModel.loadMarketContext() }
-                        } label: {
-                            Label("Refresh Market Data", systemImage: "arrow.clockwise")
-                        }
-
-                        Button {
-                            showAPIKeySheet = true
-                        } label: {
-                            Label("API Key", systemImage: "key")
-                        }
                     } label: {
                         Image(systemName: "ellipsis.circle")
                             .foregroundStyle(.primary.opacity(0.7))
                     }
                 }
             }
-            .sheet(isPresented: $showAPIKeySheet) {
-                APIKeySheet(apiKey: $storedAPIKey) {
-                    viewModel.configure(apiKey: storedAPIKey)
-                }
-                .presentationDetents([.medium])
-                .presentationDragIndicator(.visible)
-            }
             .task {
-                viewModel.configure(apiKey: storedAPIKey)
-                if viewModel.isConfigured {
-                    await viewModel.loadMarketContext()
-                }
+                await viewModel.prepare()
             }
-        }
-    }
-
-    // MARK: - API Key Prompt
-
-    private var apiKeyPrompt: some View {
-        VStack(spacing: 24) {
-            Spacer()
-
-            Image(systemName: "bolt.fill")
-                .font(.system(size: 48))
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: [
-                            Color(red: 0.55, green: 0.45, blue: 0.75),
-                            Color(red: 0.40, green: 0.55, blue: 0.75)
-                        ],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-
-            VStack(spacing: 8) {
-                Text("Portl")
-                    .font(.publicaPlay(size: 24))
-
-                Text("AI-powered market analysis using live data and news")
-                    .font(.publicaPlay(size: 14))
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 40)
-            }
-
-            Button {
-                showAPIKeySheet = true
-            } label: {
-                Text("Set Up API Key")
-                    .font(.publicaPlay(size: 16))
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 32)
-                    .padding(.vertical, 14)
-                    .background(Color.brandNavy, in: Capsule())
-            }
-            .buttonStyle(.haptic)
-
-            Text("Requires an OpenAI API key")
-                .font(.publicaPlay(size: 11))
-                .foregroundStyle(.secondary.opacity(0.6))
-
-            Spacer()
         }
     }
 
@@ -139,18 +60,32 @@ struct AIView: View {
                         .id("streaming")
                     }
 
-                    // Loading indicator
+                    // Live activity: what the assistant is actually doing.
                     if viewModel.isLoading && viewModel.streamedResponse.isEmpty {
                         HStack(spacing: 8) {
                             ProgressView()
                                 .tint(.primary.opacity(0.5))
-                            Text("Analyzing market data...")
+                            Text(viewModel.activity ?? "Thinking")
                                 .font(.publicaPlay(size: 13))
                                 .foregroundStyle(.secondary)
+                                .contentTransition(.opacity)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal, 20)
+                        .animation(.easeInOut(duration: 0.2), value: viewModel.activity)
                         .id("loading")
+                    }
+
+                    // Non-fatal notices (truncated answer, stale data).
+                    if let notice = viewModel.notice {
+                        HStack(spacing: 8) {
+                            Image(systemName: "info.circle")
+                                .foregroundStyle(.secondary)
+                            Text(notice)
+                                .font(.publicaPlay(size: 12))
+                                .foregroundStyle(.secondary)
+                        }
+                        .padding(.horizontal, 20)
                     }
 
                     // Error
@@ -188,23 +123,13 @@ struct AIView: View {
     private var welcomeSection: some View {
         VStack(spacing: 24) {
             VStack(spacing: 8) {
-                if viewModel.contextLoaded {
-                    HStack(spacing: 6) {
-                        Circle()
-                            .fill(.green)
-                            .frame(width: 6, height: 6)
-                        Text("Live market data loaded")
-                            .font(.publicaPlay(size: 12))
-                            .foregroundStyle(.secondary)
-                    }
-                } else {
-                    HStack(spacing: 6) {
-                        ProgressView()
-                            .controlSize(.mini)
-                        Text("Loading market data...")
-                            .font(.publicaPlay(size: 12))
-                            .foregroundStyle(.secondary)
-                    }
+                HStack(spacing: 6) {
+                    Image(systemName: "bolt.fill")
+                        .font(.system(size: 9))
+                        .foregroundStyle(.secondary)
+                    Text("Live prices, charts and news on demand")
+                        .font(.publicaPlay(size: 12))
+                        .foregroundStyle(.secondary)
                 }
             }
             .padding(.top, 20)
@@ -227,12 +152,12 @@ struct AIView: View {
                 )
                 quickPromptRow(
                     icon: "lightbulb",
-                    text: "Which coins have the most momentum?",
+                    text: "Which coins have the strongest momentum right now?",
                     color: .orange
                 )
                 quickPromptRow(
-                    icon: "exclamationmark.triangle",
-                    text: "Any high-impact news I should know about?",
+                    icon: "wallet.pass",
+                    text: "How is my portfolio doing?",
                     color: .red
                 )
             }
@@ -355,79 +280,6 @@ private struct MessageBubble: View {
             }
         }
         .padding(.horizontal, 16)
-    }
-}
-
-// MARK: - API Key Sheet
-
-struct APIKeySheet: View {
-
-    @Binding var apiKey: String
-    var onSave: () -> Void
-    @Environment(\.dismiss) private var dismiss
-    @State private var tempKey = ""
-
-    var body: some View {
-        VStack(spacing: 20) {
-            VStack(spacing: 8) {
-                Image(systemName: "key.fill")
-                    .font(.system(size: 28))
-                    .foregroundStyle(.secondary)
-
-                Text("OpenAI API Key")
-                    .font(.publicaPlay(size: 18))
-
-                Text("Your key is stored locally on your device and never shared.")
-                    .font(.publicaPlay(size: 12))
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 20)
-            }
-            .padding(.top, 20)
-
-            SecureField("sk-...", text: $tempKey)
-                .font(.system(size: 14, design: .monospaced))
-                .textFieldStyle(.plain)
-                .padding(14)
-                .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 12))
-                .autocorrectionDisabled()
-                .textInputAutocapitalization(.never)
-                .padding(.horizontal, 20)
-
-            Button {
-                apiKey = tempKey.trimmingCharacters(in: .whitespacesAndNewlines)
-                onSave()
-                dismiss()
-            } label: {
-                Text("Save")
-                    .font(.publicaPlay(size: 16))
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(Color.brandNavy, in: RoundedRectangle(cornerRadius: 12))
-            }
-            .buttonStyle(.haptic)
-            .padding(.horizontal, 20)
-            .disabled(tempKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-
-            if !apiKey.isEmpty {
-                Button(role: .destructive) {
-                    apiKey = ""
-                    tempKey = ""
-                    onSave()
-                    dismiss()
-                } label: {
-                    Text("Remove Key")
-                        .font(.publicaPlay(size: 14))
-                        .foregroundStyle(.red)
-                }
-            }
-
-            Spacer()
-        }
-        .onAppear {
-            tempKey = apiKey
-        }
     }
 }
 
