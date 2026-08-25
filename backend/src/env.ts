@@ -45,7 +45,9 @@ export const env = {
   // Leave unset to use OpenAI itself.
   openaiBaseURL: process.env.OPENAI_BASE_URL?.trim() || undefined,
 
-  privyAppId: authDisabled ? (process.env.PRIVY_APP_ID ?? "") : str("PRIVY_APP_ID"),
+  // Validated in index.ts when the HTTP server boots, not here: offline
+  // tooling imports the agent without ever touching auth.
+  privyAppId: process.env.PRIVY_APP_ID?.trim() ?? "",
   authDisabled,
 
   coingeckoApiKey: process.env.COINGECKO_API_KEY?.trim() || null,

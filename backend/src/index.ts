@@ -7,6 +7,11 @@ import { getProvider } from "./agent/run.ts";
 
 setLevel(env.logLevel);
 
+// The server cannot verify tokens without this; offline tooling does not need it.
+if (!env.authDisabled && !env.privyAppId) {
+  throw new Error("PRIVY_APP_ID is required unless AUTH_DISABLED=true");
+}
+
 const server = createApp();
 
 server.listen(env.port, () => {
