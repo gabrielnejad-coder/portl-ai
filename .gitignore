@@ -1,0 +1,37 @@
+# macOS
+.DS_Store
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+build/
+DerivedData/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager
+.swiftpm/
+.build/
+Packages/
+
+# CocoaPods / Carthage (unused today, cheap insurance)
+Pods/
+Carthage/Build/
+
+# Secrets
+*.xcconfig.local
+Secrets.plist
+.env
+.env.*
+!.env.example
+
+# Node (backend/)
+node_modules/
+dist/
+coverage/
+*.log

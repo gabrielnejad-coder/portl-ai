@@ -1,0 +1,837 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		222ABEE82F5B83900073537E /* SwiftOpenAI in Frameworks */ = {isa = PBXBuildFile; productRef = 222ABEE72F5B83900073537E /* SwiftOpenAI */; };
+		228396C3C666CD6642CDE319 /* Privy in Frameworks */ = {isa = PBXBuildFile; productRef = 222C618DD9114AB610B19807 /* Privy */; };
+		22CADB8D2F603C9F0081836A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22CADB8C2F603C9E0081836A /* WidgetKit.framework */; };
+		22CADB8F2F603C9F0081836A /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22CADB8E2F603C9F0081836A /* SwiftUI.framework */; };
+		22CADB9C2F603CA10081836A /* PriceTrackerExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 22CADB8B2F603C9E0081836A /* PriceTrackerExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		22330F612F5B7AA60093CAE1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 22330F4B2F5B7AA40093CAE1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 22330F522F5B7AA40093CAE1;
+			remoteInfo = "Portl AI";
+		};
+		22330F6B2F5B7AA60093CAE1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 22330F4B2F5B7AA40093CAE1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 22330F522F5B7AA40093CAE1;
+			remoteInfo = "Portl AI";
+		};
+		22CADB9A2F603CA10081836A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 22330F4B2F5B7AA40093CAE1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 22CADB8A2F603C9E0081836A;
+			remoteInfo = PriceTrackerExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		22CADB9D2F603CA10081836A /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				22CADB9C2F603CA10081836A /* PriceTrackerExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		22330F532F5B7AA40093CAE1 /* Portl AI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Portl AI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		22330F602F5B7AA60093CAE1 /* Portl AITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Portl AITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		22330F6A2F5B7AA60093CAE1 /* Portl AIUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Portl AIUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		22CADB242F5EF9A10081836A /* Portl AI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Portl AI.entitlements"; sourceTree = "<group>"; };
+		22CADB8B2F603C9E0081836A /* PriceTrackerExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PriceTrackerExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		22CADB8C2F603C9E0081836A /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		22CADB8E2F603C9F0081836A /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		22CADBA02F603CA10081836A /* Exceptions for "PriceTracker" folder in "PriceTrackerExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 22CADB8A2F603C9E0081836A /* PriceTrackerExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		22330F552F5B7AA40093CAE1 /* Portl AI */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Portl AI";
+			sourceTree = "<group>";
+		};
+		22330F632F5B7AA60093CAE1 /* Portl AITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Portl AITests";
+			sourceTree = "<group>";
+		};
+		22330F6D2F5B7AA60093CAE1 /* Portl AIUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Portl AIUITests";
+			sourceTree = "<group>";
+		};
+		22CADB902F603C9F0081836A /* PriceTracker */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				22CADBA02F603CA10081836A /* Exceptions for "PriceTracker" folder in "PriceTrackerExtension" target */,
+			);
+			path = PriceTracker;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		22330F502F5B7AA40093CAE1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				222ABEE82F5B83900073537E /* SwiftOpenAI in Frameworks */,
+				228396C3C666CD6642CDE319 /* Privy in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		22330F5D2F5B7AA60093CAE1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		22330F672F5B7AA60093CAE1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		22CADB882F603C9E0081836A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22CADB8F2F603C9F0081836A /* SwiftUI.framework in Frameworks */,
+				22CADB8D2F603C9F0081836A /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		222ABEE62F5B83900073537E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				22CADB8C2F603C9E0081836A /* WidgetKit.framework */,
+				22CADB8E2F603C9F0081836A /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		22330F4A2F5B7AA40093CAE1 = {
+			isa = PBXGroup;
+			children = (
+				22330F552F5B7AA40093CAE1 /* Portl AI */,
+				22330F632F5B7AA60093CAE1 /* Portl AITests */,
+				22330F6D2F5B7AA60093CAE1 /* Portl AIUITests */,
+				22CADB902F603C9F0081836A /* PriceTracker */,
+				222ABEE62F5B83900073537E /* Frameworks */,
+				22330F542F5B7AA40093CAE1 /* Products */,
+				22CADB242F5EF9A10081836A /* Portl AI.entitlements */,
+			);
+			sourceTree = "<group>";
+		};
+		22330F542F5B7AA40093CAE1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				22330F532F5B7AA40093CAE1 /* Portl AI.app */,
+				22330F602F5B7AA60093CAE1 /* Portl AITests.xctest */,
+				22330F6A2F5B7AA60093CAE1 /* Portl AIUITests.xctest */,
+				22CADB8B2F603C9E0081836A /* PriceTrackerExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		22330F522F5B7AA40093CAE1 /* Portl AI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 22330F742F5B7AA60093CAE1 /* Build configuration list for PBXNativeTarget "Portl AI" */;
+			buildPhases = (
+				22330F4F2F5B7AA40093CAE1 /* Sources */,
+				22330F502F5B7AA40093CAE1 /* Frameworks */,
+				22330F512F5B7AA40093CAE1 /* Resources */,
+				22CADB9D2F603CA10081836A /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				22CADB9B2F603CA10081836A /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				22330F552F5B7AA40093CAE1 /* Portl AI */,
+			);
+			name = "Portl AI";
+			packageProductDependencies = (
+				222ABEE72F5B83900073537E /* SwiftOpenAI */,
+				222C618DD9114AB610B19807 /* Privy */,
+			);
+			productName = "Portl AI";
+			productReference = 22330F532F5B7AA40093CAE1 /* Portl AI.app */;
+			productType = "com.apple.product-type.application";
+		};
+		22330F5F2F5B7AA60093CAE1 /* Portl AITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 22330F772F5B7AA60093CAE1 /* Build configuration list for PBXNativeTarget "Portl AITests" */;
+			buildPhases = (
+				22330F5C2F5B7AA60093CAE1 /* Sources */,
+				22330F5D2F5B7AA60093CAE1 /* Frameworks */,
+				22330F5E2F5B7AA60093CAE1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				22330F622F5B7AA60093CAE1 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				22330F632F5B7AA60093CAE1 /* Portl AITests */,
+			);
+			name = "Portl AITests";
+			packageProductDependencies = (
+			);
+			productName = "Portl AITests";
+			productReference = 22330F602F5B7AA60093CAE1 /* Portl AITests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		22330F692F5B7AA60093CAE1 /* Portl AIUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 22330F7A2F5B7AA60093CAE1 /* Build configuration list for PBXNativeTarget "Portl AIUITests" */;
+			buildPhases = (
+				22330F662F5B7AA60093CAE1 /* Sources */,
+				22330F672F5B7AA60093CAE1 /* Frameworks */,
+				22330F682F5B7AA60093CAE1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				22330F6C2F5B7AA60093CAE1 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				22330F6D2F5B7AA60093CAE1 /* Portl AIUITests */,
+			);
+			name = "Portl AIUITests";
+			packageProductDependencies = (
+			);
+			productName = "Portl AIUITests";
+			productReference = 22330F6A2F5B7AA60093CAE1 /* Portl AIUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		22CADB8A2F603C9E0081836A /* PriceTrackerExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 22CADBA12F603CA10081836A /* Build configuration list for PBXNativeTarget "PriceTrackerExtension" */;
+			buildPhases = (
+				22CADB872F603C9E0081836A /* Sources */,
+				22CADB882F603C9E0081836A /* Frameworks */,
+				22CADB892F603C9E0081836A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				22CADB902F603C9F0081836A /* PriceTracker */,
+			);
+			name = PriceTrackerExtension;
+			packageProductDependencies = (
+			);
+			productName = PriceTrackerExtension;
+			productReference = 22CADB8B2F603C9E0081836A /* PriceTrackerExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		22330F4B2F5B7AA40093CAE1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2630;
+				LastUpgradeCheck = 2630;
+				TargetAttributes = {
+					22330F522F5B7AA40093CAE1 = {
+						CreatedOnToolsVersion = 26.3;
+					};
+					22330F5F2F5B7AA60093CAE1 = {
+						CreatedOnToolsVersion = 26.3;
+						TestTargetID = 22330F522F5B7AA40093CAE1;
+					};
+					22330F692F5B7AA60093CAE1 = {
+						CreatedOnToolsVersion = 26.3;
+						TestTargetID = 22330F522F5B7AA40093CAE1;
+					};
+					22CADB8A2F603C9E0081836A = {
+						CreatedOnToolsVersion = 26.3;
+					};
+				};
+			};
+			buildConfigurationList = 22330F4E2F5B7AA40093CAE1 /* Build configuration list for PBXProject "Portl AI" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 22330F4A2F5B7AA40093CAE1;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				2212815A2F5B7DF700AC11F6 /* XCRemoteSwiftPackageReference "swift-algorithms" */,
+				2212815B2F5B7F2D00AC11F6 /* XCRemoteSwiftPackageReference "SwiftOpenAI" */,
+				229090C95B9512317D2BF5EB /* XCRemoteSwiftPackageReference "privy-ios" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 22330F542F5B7AA40093CAE1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				22330F522F5B7AA40093CAE1 /* Portl AI */,
+				22330F5F2F5B7AA60093CAE1 /* Portl AITests */,
+				22330F692F5B7AA60093CAE1 /* Portl AIUITests */,
+				22CADB8A2F603C9E0081836A /* PriceTrackerExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		22330F512F5B7AA40093CAE1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		22330F5E2F5B7AA60093CAE1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		22330F682F5B7AA60093CAE1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		22CADB892F603C9E0081836A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		22330F4F2F5B7AA40093CAE1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		22330F5C2F5B7AA60093CAE1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		22330F662F5B7AA60093CAE1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		22CADB872F603C9E0081836A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		22330F622F5B7AA60093CAE1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 22330F522F5B7AA40093CAE1 /* Portl AI */;
+			targetProxy = 22330F612F5B7AA60093CAE1 /* PBXContainerItemProxy */;
+		};
+		22330F6C2F5B7AA60093CAE1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 22330F522F5B7AA40093CAE1 /* Portl AI */;
+			targetProxy = 22330F6B2F5B7AA60093CAE1 /* PBXContainerItemProxy */;
+		};
+		22CADB9B2F603CA10081836A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 22CADB8A2F603C9E0081836A /* PriceTrackerExtension */;
+			targetProxy = 22CADB9A2F603CA10081836A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		22330F722F5B7AA60093CAE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = DQA3B69345;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		22330F732F5B7AA60093CAE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = DQA3B69345;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		22330F752F5B7AA60093CAE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5SAX25WKUQ;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Portl-AI-Info.plist";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Let's keep your data safe.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "portlwallet.io.Portl-AI";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		22330F762F5B7AA60093CAE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5SAX25WKUQ;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Portl-AI-Info.plist";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Let's keep your data safe.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "portlwallet.io.Portl-AI";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		22330F782F5B7AA60093CAE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DQA3B69345;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "portlwallet.io.Portl-AITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Portl AI.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Portl AI";
+			};
+			name = Debug;
+		};
+		22330F792F5B7AA60093CAE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DQA3B69345;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "portlwallet.io.Portl-AITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Portl AI.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Portl AI";
+			};
+			name = Release;
+		};
+		22330F7B2F5B7AA60093CAE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DQA3B69345;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "portlwallet.io.Portl-AIUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Portl AI";
+			};
+			name = Debug;
+		};
+		22330F7C2F5B7AA60093CAE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DQA3B69345;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "portlwallet.io.Portl-AIUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Portl AI";
+			};
+			name = Release;
+		};
+		22CADB9E2F603CA10081836A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DQA3B69345;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PriceTracker/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PriceTracker;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "portlwallet.io.Portl-AI.PriceTracker";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		22CADB9F2F603CA10081836A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DQA3B69345;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PriceTracker/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PriceTracker;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "portlwallet.io.Portl-AI.PriceTracker";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		22330F4E2F5B7AA40093CAE1 /* Build configuration list for PBXProject "Portl AI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				22330F722F5B7AA60093CAE1 /* Debug */,
+				22330F732F5B7AA60093CAE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		22330F742F5B7AA60093CAE1 /* Build configuration list for PBXNativeTarget "Portl AI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				22330F752F5B7AA60093CAE1 /* Debug */,
+				22330F762F5B7AA60093CAE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		22330F772F5B7AA60093CAE1 /* Build configuration list for PBXNativeTarget "Portl AITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				22330F782F5B7AA60093CAE1 /* Debug */,
+				22330F792F5B7AA60093CAE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		22330F7A2F5B7AA60093CAE1 /* Build configuration list for PBXNativeTarget "Portl AIUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				22330F7B2F5B7AA60093CAE1 /* Debug */,
+				22330F7C2F5B7AA60093CAE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		22CADBA12F603CA10081836A /* Build configuration list for PBXNativeTarget "PriceTrackerExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				22CADB9E2F603CA10081836A /* Debug */,
+				22CADB9F2F603CA10081836A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2212815A2F5B7DF700AC11F6 /* XCRemoteSwiftPackageReference "swift-algorithms" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-algorithms.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.1;
+			};
+		};
+		2212815B2F5B7F2D00AC11F6 /* XCRemoteSwiftPackageReference "SwiftOpenAI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jamesrochabrun/SwiftOpenAI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+		229090C95B9512317D2BF5EB /* XCRemoteSwiftPackageReference "privy-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/privy-io/privy-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		222ABEE72F5B83900073537E /* SwiftOpenAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2212815B2F5B7F2D00AC11F6 /* XCRemoteSwiftPackageReference "SwiftOpenAI" */;
+			productName = SwiftOpenAI;
+		};
+		222C618DD9114AB610B19807 /* Privy */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 229090C95B9512317D2BF5EB /* XCRemoteSwiftPackageReference "privy-ios" */;
+			productName = Privy;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 22330F4B2F5B7AA40093CAE1 /* Project object */;
+}

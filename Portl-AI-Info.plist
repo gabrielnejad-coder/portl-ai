@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>Portl</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Portl uses Face ID to securely authenticate and protect your wallet.</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>portlwallet.io.Portl-AI</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>portlai</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>
