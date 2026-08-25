@@ -15,7 +15,7 @@ struct PortlAPIClient {
            let url = URL(string: configured), !configured.isEmpty {
             return url
         }
-        return URL(string: "https://portl-backend.up.railway.app")!
+        return URL(string: "https://portl-backend-production.up.railway.app")!
     }()
 
     // MARK: - Wire types
