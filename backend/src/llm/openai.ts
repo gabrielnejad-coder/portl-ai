@@ -27,9 +27,18 @@ let client: OpenAI | null = null;
 function getClient(): OpenAI {
   if (!client) {
     if (!env.openaiApiKey) {
-      throw new Error("OPENAI_API_KEY is required when LLM_PROVIDER=openai");
+      throw new Error(
+        "OPENAI_API_KEY is required when LLM_PROVIDER=openai " +
+          "(any value works for a local server that ignores auth)",
+      );
     }
-    client = new OpenAI({ apiKey: env.openaiApiKey, maxRetries: 2, timeout: 120_000 });
+    client = new OpenAI({
+      apiKey: env.openaiApiKey,
+      // Set OPENAI_BASE_URL to point at any OpenAI-compatible provider.
+      ...(env.openaiBaseURL ? { baseURL: env.openaiBaseURL } : {}),
+      maxRetries: 2,
+      timeout: 120_000,
+    });
   }
   return client;
 }

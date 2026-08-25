@@ -40,6 +40,10 @@ export const env = {
   anthropicModel: str("ANTHROPIC_MODEL", "claude-opus-5"),
   openaiApiKey: provider === "openai" ? str("OPENAI_API_KEY") : process.env.OPENAI_API_KEY,
   openaiModel: str("OPENAI_MODEL", "gpt-4o"),
+  // Any OpenAI-compatible endpoint works here: Groq, DeepSeek, Together,
+  // Fireworks, OpenRouter, xAI, Mistral, or a local Ollama/LM Studio server.
+  // Leave unset to use OpenAI itself.
+  openaiBaseURL: process.env.OPENAI_BASE_URL?.trim() || undefined,
 
   privyAppId: authDisabled ? (process.env.PRIVY_APP_ID ?? "") : str("PRIVY_APP_ID"),
   authDisabled,
