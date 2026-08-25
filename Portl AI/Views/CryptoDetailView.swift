@@ -14,6 +14,10 @@ struct CryptoDetailView: View {
     @State private var sellAmount = ""
     @State private var isSwapping = false
     @State private var swapError: String?
+    @State private var pendingQuote: WalletManager.SwapQuote?
+    @State private var showQuoteConfirm = false
+    @State private var showSwapSuccess = false
+    @State private var swapSignature: String?
     @State private var priceVisible = true
     @State private var safariURL: URL?
 
@@ -545,16 +549,39 @@ struct CryptoDetailView: View {
             .disabled(wallet.balance(for: vm.crypto.id) <= 0)
             .opacity(wallet.balance(for: vm.crypto.id) > 0 ? 1 : 0.4)
         }
+        // Step 1 — enter an amount. This only fetches a price; nothing is signed.
         .alert("Sell \(vm.crypto.symbol.uppercased())", isPresented: $showSellConfirm) {
             TextField("Amount", text: $sellAmount)
                 .keyboardType(.decimalPad)
             Button("Cancel", role: .cancel) { sellAmount = "" }
-            Button("Swap to USDC") {
-                Task { await executeSell() }
+            Button("Review") {
+                Task { await requestQuote() }
             }
         } message: {
             let bal = wallet.balance(for: vm.crypto.id)
-            Text("You have \(bal, specifier: "%.6f") \(vm.crypto.symbol.uppercased()).\nEnter amount to swap to USDC via Jupiter.")
+            Text("You have \(bal, specifier: "%.6f") \(vm.crypto.symbol.uppercased()).\nEnter an amount to quote a swap to USDC via Jupiter.")
+        }
+        // Step 2 — confirm the actual price. The user is agreeing to a rate,
+        // not just an amount; previously they never saw one before signing.
+        .alert("Confirm swap", isPresented: $showQuoteConfirm) {
+            Button("Cancel", role: .cancel) { pendingQuote = nil; sellAmount = "" }
+            Button("Swap") {
+                Task { await confirmSwap() }
+            }
+        } message: {
+            if let q = pendingQuote {
+                Text("""
+                Sell \(q.inputAmount, specifier: "%.6f") \(vm.crypto.symbol.uppercased())
+                Receive about \(q.expectedOutput, specifier: "%.2f") USDC
+                Minimum after \(Double(q.slippageBps) / 100, specifier: "%.2f")% slippage: \(q.minimumOutput, specifier: "%.2f") USDC
+                Price impact: \(q.priceImpactPct * 100, specifier: "%.2f")%
+                """)
+            }
+        }
+        .alert("Swap submitted", isPresented: $showSwapSuccess) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Signature: \(swapSignature ?? "—")\nBalances update once the network confirms it.")
         }
         .sheet(isPresented: $showBuySheet) {
             MoonPayBuySheet(
@@ -567,26 +594,66 @@ struct CryptoDetailView: View {
         }
     }
 
-    private func executeSell() async {
-        guard let amount = Double(sellAmount), amount > 0 else { return }
-        guard let mint = wallet.solanaTokenMint(for: vm.crypto.id),
-              let address = wallet.solanaAddress else { return }
+    /// Step 1: validate the amount against the real balance and price the swap.
+    private func requestQuote() async {
+        swapError = nil
+
+        guard let mint = wallet.solanaTokenMint(for: vm.crypto.id) else {
+            swapError = WalletError.unknownToken.errorDescription
+            return
+        }
+        guard wallet.solanaAddress != nil else {
+            swapError = WalletError.noWallet.errorDescription
+            return
+        }
+        // Parse as Decimal, not Double: the amount is converted to integer base
+        // units and binary floating point cannot represent decimal fractions
+        // exactly.
+        guard let typed = Decimal(string: sellAmount.trimmingCharacters(in: .whitespaces)),
+              typed > 0,
+              let decimals = wallet.decimals(forMint: mint),
+              let raw = WalletManager.rawAmount(from: typed, decimals: decimals) else {
+            swapError = WalletError.invalidAmount.errorDescription
+            return
+        }
+
+        // The old code never checked this, so it would happily build a swap for
+        // more than the wallet held and fail on-chain after the user confirmed.
+        let sellable = wallet.maxSellableRaw(for: vm.crypto.id)
+        guard raw <= sellable else {
+            swapError = vm.crypto.id == "solana"
+                ? "Not enough SOL — some must stay behind to cover network fees."
+                : WalletError.insufficientBalance.errorDescription
+            return
+        }
+
+        isSwapping = true
+        do {
+            pendingQuote = try await wallet.fetchSwapQuote(inputMint: mint, rawAmount: raw)
+            showQuoteConfirm = true
+        } catch {
+            swapError = error.localizedDescription
+        }
+        isSwapping = false
+    }
+
+    /// Step 2: sign and broadcast the quote the user just approved.
+    private func confirmSwap() async {
+        guard let quote = pendingQuote else { return }
 
         isSwapping = true
         swapError = nil
 
         do {
-            // Convert to smallest unit (assumes 9 decimals for most Solana tokens)
-            let lamports = Int(amount * 1_000_000_000)
-            let tx = try await wallet.buildJupiterSwapTx(
-                inputMint: mint,
-                amount: lamports,
-                userAddress: address
-            )
-            let _ = try await wallet.executeSwap(serializedTx: tx)
-            // Refresh balances after swap
-            await wallet.refreshBalances()
+            let signature = try await wallet.executeSwap(quote: quote)
+            swapSignature = signature
+            showSwapSuccess = true
             sellAmount = ""
+            pendingQuote = nil
+            // Only refresh after a real signature comes back. The previous code
+            // refreshed unconditionally and reported success for a swap that
+            // was never broadcast.
+            await wallet.refreshBalances()
         } catch {
             swapError = error.localizedDescription
         }

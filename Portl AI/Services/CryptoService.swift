@@ -110,9 +110,11 @@ actor CryptoService {
         } catch is CancellationError {
             throw CancellationError()
         } catch {
-            // On failure, try stale in-memory or disk cache
-            if let stale: [Cryptocurrency] = await cache.get(cacheKey) {
-                return stale
+            // On failure, fall back to stale in-memory data, then disk.
+            // This uses getStale, not get: get only returns unexpired entries,
+            // so the old code could never reach its own fallback.
+            if let stale: (value: [Cryptocurrency], age: TimeInterval) = await cache.getStale(cacheKey) {
+                return stale.value
             }
             if let diskData = loadDiskCache() {
                 return diskData
@@ -242,9 +244,9 @@ actor CryptoService {
         } catch is CancellationError {
             throw CancellationError()
         } catch {
-            // Return stale cache if available
-            if let stale: [PriceDataPoint] = await cache.get(cacheKey) {
-                return stale
+            // Return stale cache if available (see note above on getStale)
+            if let stale: (value: [PriceDataPoint], age: TimeInterval) = await cache.getStale(cacheKey) {
+                return stale.value
             }
             throw error
         }

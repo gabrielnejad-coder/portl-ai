@@ -50,7 +50,38 @@ final class PortfolioViewModel {
         isLoading = false
     }
 
-    func executeTrade(_ trade: Trade) {
+    enum TradeError: LocalizedError {
+        case oversell(available: Double, requested: Double)
+        case noPosition
+        case invalidQuantity
+
+        var errorDescription: String? {
+            switch self {
+            case .oversell(let available, let requested):
+                return String(format: "You only hold %.6f, but tried to sell %.6f.", available, requested)
+            case .noPosition:
+                return "You don't hold this asset."
+            case .invalidQuantity:
+                return "Quantity must be greater than zero."
+            }
+        }
+    }
+
+    func executeTrade(_ trade: Trade) throws {
+        guard trade.quantity > 0 else { throw TradeError.invalidQuantity }
+
+        // Selling more than is held previously drove quantity negative, which
+        // then tripped the `<= 0` branch below and silently deleted the whole
+        // position instead of rejecting the trade.
+        if trade.type == .sell {
+            guard let existing = portfolio.holdings.first(where: { $0.id == trade.cryptoId }) else {
+                throw TradeError.noPosition
+            }
+            guard trade.quantity <= existing.quantity else {
+                throw TradeError.oversell(available: existing.quantity, requested: trade.quantity)
+            }
+        }
+
         tradeHistory.append(trade)
 
         if let index = portfolio.holdings.firstIndex(where: { $0.id == trade.cryptoId }) {

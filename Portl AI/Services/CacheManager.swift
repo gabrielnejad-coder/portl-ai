@@ -48,12 +48,22 @@ actor CacheManager {
     // MARK: - Public API
 
     /// Retrieves a cached value if it exists and hasn't expired.
+    ///
+    /// Expired entries are RETAINED, not deleted. Deleting them here made
+    /// CryptoService's "return stale cache on failure" fallback unreachable:
+    /// the expiry check evicted the entry, so the catch block always found
+    /// nothing. Eviction is handled by `purgeExpired()` instead.
     func get<T>(_ key: String) -> T? {
-        guard let entry = entries[key], entry.isValid else {
-            entries.removeValue(forKey: key)
-            return nil
-        }
+        guard let entry = entries[key], entry.isValid else { return nil }
         return entry.data as? T
+    }
+
+    /// Retrieves a value regardless of age, for use as a fallback when the
+    /// network fails. Returns the value and how stale it is, so callers can
+    /// tell the user they're looking at older data.
+    func getStale<T>(_ key: String) -> (value: T, age: TimeInterval)? {
+        guard let entry = entries[key], let value = entry.data as? T else { return nil }
+        return (value, Date().timeIntervalSince(entry.timestamp))
     }
 
     /// Stores a value in the cache with the given category's TTL.
