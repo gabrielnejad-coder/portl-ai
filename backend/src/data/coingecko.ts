@@ -31,17 +31,8 @@ const limiter = new SlidingWindowLimiter({
 
 const cache = new TtlCache({ maxEntries: 400 });
 
-export class UpstreamError extends Error {
-  readonly status: number | null;
-  readonly retryable: boolean;
-
-  constructor(message: string, status: number | null, retryable: boolean) {
-    super(message);
-    this.name = "UpstreamError";
-    this.status = status;
-    this.retryable = retryable;
-  }
-}
+import { UpstreamError } from "./errors.ts";
+export { UpstreamError };
 
 function authHeaders(): Record<string, string> {
   if (!env.coingeckoApiKey) return {};

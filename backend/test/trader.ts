@@ -97,7 +97,7 @@ async function scoreMatured(rows: Row[]): Promise<number> {
 
 // ── 2. Collect a fresh prediction ───────────────────────────────────────────
 
-const PROMPT = `For each of bitcoin, ethereum, and solana, predict the price direction over the NEXT 24 hours. Use your tools: check current data and recent chart history before deciding.
+const PROMPT = `For each of bitcoin, ethereum, and solana, predict the price direction over the NEXT 24 hours. Use your tools: check current data, recent chart history, and derivatives positioning (funding rate and open interest) before deciding.
 
 Definitions: "up" means more than +0.5%, "down" means more than -0.5% down, "flat" means within that band.
 

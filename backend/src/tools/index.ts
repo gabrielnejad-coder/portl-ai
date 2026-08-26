@@ -13,6 +13,7 @@
 import { getMarkets, getMarketChart, searchCoins, UpstreamError } from "../data/coingecko.ts";
 import { fetchNews } from "../data/news.ts";
 import { computeIndicators } from "../data/indicators.ts";
+import { getDerivatives, instrumentFor } from "../data/derivatives.ts";
 import { sanitizeCoinId, sanitizeQuery, wrapUntrusted } from "../data/sanitize.ts";
 import { log } from "../util/log.ts";
 
@@ -397,6 +398,59 @@ const getPortfolio: ToolDef = {
   },
 };
 
+const getDerivativesData: ToolDef = {
+  name: "get_derivatives_data",
+  description:
+    "Perpetual futures positioning for a major coin: current funding rate, 7-day average " +
+    "funding, and open interest in USD (from OKX). Funding and open interest are independent " +
+    "of price-derived indicators — use this to judge whether a move is crowded or supported. " +
+    "Sign convention: positive funding means longs pay shorts (market is crowded long); " +
+    "negative means shorts pay longs. Rising open interest means money entering, falling " +
+    "means positions closing. Available for top-10 coins only.",
+  schema: {
+    type: "object",
+    properties: {
+      coinId: {
+        type: "string",
+        description: "CoinGecko coin id, lowercase (e.g. 'bitcoin').",
+      },
+    },
+    required: ["coinId"],
+    additionalProperties: false,
+  },
+  run: async (input, ctx) => {
+    const coinId = sanitizeCoinId(input["coinId"]);
+    if (!coinId) return toolError("Invalid coin id.");
+    if (!instrumentFor(coinId)) {
+      return toolError(
+        `No derivatives data for '${coinId}'.`,
+        "Only major coins (bitcoin, ethereum, solana, ripple, dogecoin, cardano, avalanche-2, chainlink, litecoin, the-open-network) are supported.",
+      );
+    }
+
+    try {
+      const d = await getDerivatives(coinId, ctx.signal);
+      return json({
+        ok: true,
+        coinId,
+        instrument: d.instrument,
+        fundingRatePct8h: d.funding.currentPct8h,
+        fundingAnnualizedPct: d.funding.annualizedPct,
+        fundingAvg7dPct8h: d.funding.avg7dPct8h,
+        fundingVs7dAverage: d.funding.vsAverage,
+        openInterestUsd: d.openInterestUsd,
+        signConvention: "positive funding = longs pay shorts (crowded long); negative = shorts pay longs",
+        asOf: d.asOf,
+      });
+    } catch (err) {
+      log.warn("get_derivatives_data failed", { err: String(err) });
+      return toolError(
+        err instanceof UpstreamError ? err.message : "Derivatives data is temporarily unavailable.",
+      );
+    }
+  },
+};
+
 export const TOOLS: readonly ToolDef[] = [
   getMarketOverview,
   getCoinData,
@@ -404,6 +458,7 @@ export const TOOLS: readonly ToolDef[] = [
   searchCoinsTool,
   getNewsTool,
   getPortfolio,
+  getDerivativesData,
 ];
 
 export const TOOLS_BY_NAME: ReadonlyMap<string, ToolDef> = new Map(TOOLS.map((t) => [t.name, t]));

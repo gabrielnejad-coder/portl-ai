@@ -283,3 +283,34 @@ describe("parseRss", () => {
     assert.ok(a!.title.includes("[filtered]"), a!.title);
   });
 });
+
+// ── derivatives ─────────────────────────────────────────────────────────────
+
+import { summarizeFunding, instrumentFor } from "../src/data/derivatives.ts";
+
+test("summarizeFunding: averages history and annualizes", () => {
+  const s = summarizeFunding(0.0001, [0.0001, 0.0001, 0.0001]);
+  assert.equal(s.currentPct8h, 0.01);
+  assert.equal(s.avg7dPct8h, 0.01);
+  assert.equal(s.annualizedPct, 10.95); // 0.01% * 3 * 365
+  assert.equal(s.vsAverage, "near");
+});
+
+test("summarizeFunding: flags elevated funding vs its average", () => {
+  const s = summarizeFunding(0.0005, [0.0001, 0.0001, 0.0001]);
+  assert.equal(s.vsAverage, "above");
+  const n = summarizeFunding(-0.0003, [0.0001, 0.0001]);
+  assert.equal(n.vsAverage, "below");
+});
+
+test("summarizeFunding: empty history falls back to current", () => {
+  const s = summarizeFunding(0.0002, []);
+  assert.equal(s.avg7dPct8h, 0.02);
+  assert.equal(s.vsAverage, "near");
+});
+
+test("instrumentFor: maps known ids, rejects unknown", () => {
+  assert.equal(instrumentFor("bitcoin"), "BTC-USDT-SWAP");
+  assert.equal(instrumentFor("solana"), "SOL-USDT-SWAP");
+  assert.equal(instrumentFor("zzzfakecoin"), null);
+});
