@@ -12,7 +12,8 @@
     "dev": "node --experimental-strip-types --watch src/index.ts",
     "test": "node --experimental-strip-types --test test/*.test.ts",
     "typecheck": "tsc --noEmit",
-    "accuracy": "node --env-file=.env --experimental-strip-types test/accuracy.ts"
+    "accuracy": "node --env-file=.env --experimental-strip-types test/accuracy.ts",
+    "trader": "node --env-file=.env --experimental-strip-types test/trader.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.120.0",
