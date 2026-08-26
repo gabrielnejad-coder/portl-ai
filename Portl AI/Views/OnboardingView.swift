@@ -8,6 +8,11 @@ struct OnboardingView: View {
 
     @State private var auth = AuthManager.shared
 
+    // Email sign-in sheet
+    @State private var showEmailSheet = false
+    @State private var emailInput = ""
+    @State private var otpInput = ""
+
     // Bubble position in points (converted to normalized 0–1 for shader)
     @State private var bubblePosition: CGPoint = .zero
     @State private var isDragging = false
@@ -463,9 +468,128 @@ struct OnboardingView: View {
             .disabled(true)
             .padding(.horizontal, 24)
 
+            // Continue with Email — works everywhere OAuth can't (simulator included)
+            Button {
+                auth.authError = nil
+                showEmailSheet = true
+            } label: {
+                Text("Continue with Email")
+                    .font(.system(size: 15, weight: .medium))
+                    .foregroundStyle(Color.brandNavy.opacity(0.7))
+                    .frame(height: 40)
+            }
+            .buttonStyle(.haptic)
+
+            if auth.isProcessing {
+                HStack(spacing: 8) {
+                    ProgressView().controlSize(.small)
+                    Text("Signing in...")
+                        .font(.system(size: 13))
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            if let error = auth.authError {
+                Text(error)
+                    .font(.system(size: 13))
+                    .foregroundStyle(.red)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 32)
+            }
         }
         .disabled(auth.isProcessing)
         .opacity(auth.isProcessing ? 0.6 : 1)
+        .sheet(isPresented: $showEmailSheet) {
+            emailSheet
+                .presentationDetents([.medium])
+                .presentationDragIndicator(.visible)
+                .onDisappear {
+                    auth.emailOTPSent = false
+                    auth.authError = nil
+                    otpInput = ""
+                }
+        }
+    }
+
+    // MARK: - Email Sign-In Sheet
+
+    private var emailSheet: some View {
+        VStack(spacing: 16) {
+            Text(auth.emailOTPSent ? "Check your email" : "Sign in with email")
+                .font(.system(size: 20, weight: .semibold))
+                .padding(.top, 28)
+
+            if !auth.emailOTPSent {
+                TextField("Email address", text: $emailInput)
+                    .font(.system(size: 16))
+                    .keyboardType(.emailAddress)
+                    .textContentType(.emailAddress)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .padding(16)
+                    .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 14))
+                    .padding(.horizontal, 24)
+
+                Button {
+                    Task { await auth.sendEmailCode(to: emailInput.trimmingCharacters(in: .whitespaces)) }
+                } label: {
+                    Text(auth.isProcessing ? "Sending..." : "Send Code")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 52)
+                        .background(Color.brandNavy, in: RoundedRectangle(cornerRadius: 26))
+                }
+                .buttonStyle(.haptic)
+                .disabled(emailInput.trimmingCharacters(in: .whitespaces).isEmpty || auth.isProcessing)
+                .padding(.horizontal, 24)
+            } else {
+                Text("We sent a code to \(auth.emailForOTP)")
+                    .font(.system(size: 14))
+                    .foregroundStyle(.secondary)
+
+                TextField("6-digit code", text: $otpInput)
+                    .font(.system(size: 22, weight: .medium, design: .monospaced))
+                    .keyboardType(.numberPad)
+                    .textContentType(.oneTimeCode)
+                    .multilineTextAlignment(.center)
+                    .padding(16)
+                    .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 14))
+                    .padding(.horizontal, 24)
+
+                Button {
+                    Task { await auth.verifyEmailCode(otpInput.trimmingCharacters(in: .whitespaces)) }
+                } label: {
+                    Text(auth.isProcessing ? "Verifying..." : "Verify")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 52)
+                        .background(Color.brandNavy, in: RoundedRectangle(cornerRadius: 26))
+                }
+                .buttonStyle(.haptic)
+                .disabled(otpInput.trimmingCharacters(in: .whitespaces).isEmpty || auth.isProcessing)
+                .padding(.horizontal, 24)
+
+                Button("Use a different email") {
+                    auth.emailOTPSent = false
+                    otpInput = ""
+                    auth.authError = nil
+                }
+                .font(.system(size: 14))
+                .foregroundStyle(.secondary)
+            }
+
+            if let error = auth.authError {
+                Text(error)
+                    .font(.system(size: 13))
+                    .foregroundStyle(.red)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 24)
+            }
+
+            Spacer()
+        }
     }
 }
 
