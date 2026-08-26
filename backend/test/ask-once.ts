@@ -1,5 +1,5 @@
 import { runAnalyst, parseChatRequest } from "../src/agent/run.ts";
-import type { StreamEvent } from "../src/agent/types.ts";
+import type { StreamEvent } from "../src/llm/types.ts";
 
 const tools: string[] = [];
 const req = parseChatRequest({ message: process.argv[2] ?? "is bitcoin over-leveraged rn", history: [], holdings: [] });

@@ -167,10 +167,15 @@ function report(rows: Row[]): void {
     );
   }
 
-  // Paper strategy: act only on "up" calls (long, 24h hold, fees), vs
-  // holding BTC over the same prediction windows.
-  let stratEq = 1;
-  let btcEq = 1;
+  // Paper book: $10k start, act on BOTH up (long) and down (short) calls.
+  // Each acted call gets 1/3 of equity (3 coins max); flat = deliberately
+  // out of that coin. Fees on every acted call. Rules are fixed here so
+  // results can't be curve-fit after the fact.
+  const START_EQUITY = 10_000;
+  let bookEq = START_EQUITY;
+  let btcEq = START_EQUITY;
+  let peak = START_EQUITY;
+  let maxDD = 0;
   const btcRets = new Map(
     scored.filter((r) => r.coin === "bitcoin").map((r) => [r.predictedAt, r.forwardReturn ?? 0]),
   );
@@ -181,15 +186,21 @@ function report(rows: Row[]): void {
     byTime.set(r.predictedAt, bucket);
   }
   for (const [ts, bucket] of [...byTime.entries()].sort((a, b) => a[0] - b[0])) {
-    const ups = bucket.filter((r) => r.direction === "up");
-    if (ups.length > 0) {
-      const avg = ups.reduce((s, r) => s + (r.forwardReturn ?? 0), 0) / ups.length;
-      stratEq *= 1 + avg - FEE_ROUND_TRIP;
+    let windowRet = 0;
+    for (const r of bucket) {
+      if (r.direction === "flat") continue;
+      const dir = r.direction === "up" ? 1 : -1;
+      windowRet += (dir * (r.forwardReturn ?? 0) - FEE_ROUND_TRIP) / 3;
     }
+    bookEq *= 1 + windowRet;
+    peak = Math.max(peak, bookEq);
+    maxDD = Math.max(maxDD, 1 - bookEq / peak);
     btcEq *= 1 + (btcRets.get(ts) ?? 0);
   }
-  console.log(`paper equity (act on "up" calls, 0.2% fees): ${((stratEq - 1) * 100).toFixed(2)}%`);
-  console.log(`always-long BTC same windows:               ${((btcEq - 1) * 100).toFixed(2)}%`);
+  console.log(`\n=== PAPER BOOK ($${START_EQUITY.toLocaleString()} start, long+short, 1/3 sizing, 0.2% fees) ===`);
+  console.log(`book equity:      $${bookEq.toFixed(2)}  (${((bookEq / START_EQUITY - 1) * 100).toFixed(2)}%)`);
+  console.log(`always-long BTC:  $${btcEq.toFixed(2)}  (${((btcEq / START_EQUITY - 1) * 100).toFixed(2)}%)`);
+  console.log(`max drawdown:     ${(maxDD * 100).toFixed(2)}%`);
 
   if (scored.length < 30) {
     console.log(`\nCAVEAT: n=${scored.length}. Under ~30 scored calls this is noise, not signal.`);
@@ -207,6 +218,22 @@ function report(rows: Row[]): void {
 
 // ── Main ────────────────────────────────────────────────────────────────────
 
+/** Loud when quiet: consecutive all-flat batches are a decision, not silence. */
+function idleAlarm(rows: Row[]): void {
+  const batches = [...new Set(rows.map((r) => r.predictedAt))].sort((a, b) => b - a);
+  let idle = 0;
+  for (const ts of batches) {
+    if (rows.filter((r) => r.predictedAt === ts).every((r) => r.direction === "flat")) idle++;
+    else break;
+  }
+  if (idle >= 3) {
+    console.log(
+      `\n*** IDLE ALARM: ${idle} consecutive all-flat batches. The book has taken no positions. ***\n` +
+        `*** Read the logged reasons — either the market is genuinely dead or the bot is stuck. ***`,
+    );
+  }
+}
+
 async function main(): Promise<void> {
   const rows = loadRows();
 
@@ -214,6 +241,12 @@ async function main(): Promise<void> {
   const n = await scoreMatured(rows);
   console.log(`  scored ${n} prediction(s)`);
   if (n > 0) saveRows(rows);
+
+  if (process.argv.includes("--report")) {
+    report(rows);
+    idleAlarm(rows);
+    return;
+  }
 
   console.log(`Asking the analyst for 24h calls...`);
   const fresh = await predict();
@@ -224,7 +257,15 @@ async function main(): Promise<void> {
     appendFileSync(LOG, JSON.stringify(r) + "\n");
   }
 
+  // What the paper book does with today's calls, stated plainly.
+  console.log(`\nBOOK ACTIONS (24h hold):`);
+  for (const r of fresh) {
+    if (r.direction === "flat") console.log(`  ${r.coin}: no position (flat call)`);
+    else console.log(`  ${r.coin}: ${r.direction === "up" ? "LONG" : "SHORT"} 1/3 of equity @ $${r.priceAtPrediction}`);
+  }
+
   report([...rows, ...fresh]);
+  idleAlarm([...rows, ...fresh]);
 }
 
 await main();
