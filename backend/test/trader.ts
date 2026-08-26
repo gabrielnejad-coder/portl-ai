@@ -22,11 +22,12 @@
  */
 
 import { readFileSync, writeFileSync, existsSync, appendFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { runAnalyst } from "../src/agent/run.ts";
 import { getMarkets, getMarketChart } from "../src/data/coingecko.ts";
 import type { StreamEvent } from "../src/llm/types.ts";
 
-const LOG = new URL("./trader-log.jsonl", import.meta.url).pathname;
+const LOG = fileURLToPath(new URL("./trader-log.jsonl", import.meta.url));
 const COINS = ["bitcoin", "ethereum", "solana"] as const;
 const HORIZON_MS = 24 * 60 * 60_000;
 const FLAT_BAND = 0.005; // |move| <= 0.5% counts as flat
